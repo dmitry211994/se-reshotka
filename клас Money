@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace pragramiravanie
+{
+    public class Money
+    {
+        public static int[] nomcol = new int[2] {5000, 2};
+        public int first = nomcol[0]; //номинал
+        public int second = nomcol[1]; //количество
+        public static Money operator ++(Money money)
+        {
+            money.first++;
+            money.second++;
+            return money;
+        }
+        public static Money operator --(Money money)
+        {
+            money.first--;
+            money.second--;
+            return money;
+        }
+        public static bool operator !(Money money)
+        {
+            if(money.second != 0) return true;
+            else return false;
+        }
+        public static Money operator +(Money money, int increment)
+        {
+            money.first++;
+            money.second++;
+            return money;
+        }
+        public int this[int index]
+        {
+            get
+            {
+                if (index == 0) return first;
+                else if (index == 1) return second;
+                else throw new Exception("0 или 1 только можно");
+            }
+            set
+            {
+                if (index == 0) first = value;
+                else if (index == 1) second = value;
+                else throw new Exception("0 или 1 только можно");
+            }
+        }
+        public Money() { }
+        public Money(int first, int second)
+        {
+            this.first = first;
+            this.second = second;
+        }
+        public string Nominal_kolichestvo()
+        {
+            return $"номинал {first} количество {second} ";
+        }
+        public string YesNoCheck(int N, int first, int second)
+        {
+            if (first*second >= N) return "yes";
+            else return "no";
+        }
+        public int HowManyToBuy(double n, int first, int second)
+        {
+            return (int)Math.Floor(first*second / n);
+        }
+        
+        public int First
+        {
+            get { return first; }
+            set {first = value;}
+        }
+        public int Second
+        {
+            get { return second; }
+            set { second = value; }
+        }
+        public int FirstReadOnly
+        { get { return first*second; } }
+    }
+}
+/*
+            //4
+            List<Money> money = new List<Money>
+            {
+                new Money(),
+                new Money(),
+                new Money(),
+                new Money(),
+                new Money(),
+            };
+            money[2][1] = 4;
+            Console.WriteLine($"{money[2][0]} {money[2][1]}");
+
+            //Console.WriteLine("если в [] писать что-то кроме 0 и 1: ");
+            //Console.WriteLine(money[2][123]);
+
+            money[3][0] = 50; money[3][1] = 2;
+            Console.WriteLine($"изначально {money[3][0]} {money[3][1]}");
+            money[3]++;
+            Console.Write($"инкремент {money[3].first} "); Console.WriteLine(money[3].second);
+            money[3]--;
+            Console.Write($"декремент {money[3].first} "); Console.WriteLine(money[3].second);
+            Console.WriteLine($"восклицательный знак {!money[3]}");
+            money[3] = money[3] + 1000;
+            Console.WriteLine($"сложение {money[3][0]} {money[3][1]}");*/
