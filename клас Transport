@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace pragramiravanie
+{
+    abstract class Transport
+    {
+        abstract public void ShowInfo();
+        abstract public double LoadCapacity();
+
+    }
+    class PassangerCar : Transport
+    {
+        public string brand;
+        public string VIN; //vehicle identification number
+        public int speed;
+        public double loadcapacity;
+
+        public PassangerCar() { }
+        public PassangerCar(string brand, string VIN, int speed, double loadcapacity)
+        {
+            this.brand = brand;
+            this.VIN = VIN;
+            this.speed = speed;
+            this.loadcapacity = loadcapacity;
+        }
+
+        public override void ShowInfo()
+        {
+            Console.Write("brand {0} vin {1} speed {2} load capacity ", brand, VIN, speed);
+            LoadCapacity();
+        }
+        public override double LoadCapacity()
+        {
+            return loadcapacity;
+        }
+    }
+    class Motorcycle : Transport
+    {
+        public string brand;
+        public string VIN; //vehicle identification number
+        public int speed;
+        public bool sidecar;
+        public double loadcapacity;
+
+        public Motorcycle(string brand, string VIN, int speed, bool sidecar, double loadcapacity)
+        {
+            this.brand = brand;
+            this.VIN = VIN;
+            this.speed = speed;
+            this.sidecar = sidecar;
+            this.loadcapacity = loadcapacity;
+        }
+
+        public override void ShowInfo()
+        {
+            Console.Write("brand {0} vin {1} speed {2} sidecar {3} load capacity ", brand, VIN, speed, sidecar);
+            LoadCapacity();
+        }
+        public override double LoadCapacity()
+        {
+            if (sidecar) { return loadcapacity; }
+            else return 0;
+        }
+    }
+    class Truck : Transport
+    {
+        public string brand;
+        public string VIN; //vehicle identification number
+        public int speed;
+        public bool trailer;
+        public double loadcapasity;
+        public Truck(string brand, string VIN, int speed, bool trailer, double loadcapasity)
+        {
+            this.brand = brand;
+            this.VIN = VIN;
+            this.speed = speed;
+            this.trailer = trailer;
+            this.loadcapasity = loadcapasity;
+        }
+
+        public override void ShowInfo()
+        {
+            Console.Write("brand {0} vin {1} speed {2} load capacity ", brand, VIN, speed, trailer);
+            LoadCapacity();
+        }
+        public override double LoadCapacity()
+        {
+            if (trailer) { return loadcapasity*2; }
+            else return loadcapasity;
+        }
+    }
+}
