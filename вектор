@@ -1,0 +1,73 @@
+using System;
+using static GeometryTasks.Geometry;
+
+namespace GeometryTasks
+{
+    public class Vector : Geometry
+    {
+        public double X;
+        public double Y;
+        public static bool Belongs(Segment s, Vector v)
+        {
+            return Geometry.IsVectorInSegment(v, s);
+        }
+
+        public static Vector Add(Vector v1, Vector v2)
+        {
+            return new Vector { X = v1.X + v2.X, Y = v1.Y + v2.Y };
+        }
+
+        public double GetLength()
+        {
+            return Geometry.GetLength(this);
+        }
+    }
+
+    public class Geometry
+    {
+        public static double GetLength(Vector vector)
+        {
+            return Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+        }
+        public static double GetLength(Segment segment)
+        {
+            double X1 = segment.Begin.X;
+            double Y1 = segment.Begin.Y;
+            double X2 = segment.End.X;
+            double Y2 = segment.End.Y;
+
+            double length = Math.Sqrt(Math.Pow(X2 - X1, 2) + Math.Pow(Y2 - Y1, 2));
+
+            return length;
+        }
+        public static bool IsVectorInSegment(Vector v, Segment s)
+        {
+            double eps = 1e-6;
+            double length1 = Geometry.GetLength(new Segment { Begin = s.Begin, End = v });
+            double length2 = Geometry.GetLength(new Segment { Begin = v, End = s.End });
+            double length = Geometry.GetLength(s);
+            return Math.Abs(length1 + length2 - length) < eps;
+        }
+        public static Vector Add(Vector vector1, Vector vector2)
+        {
+            Vector result = new Vector();
+            result.X = vector1.X + vector2.X;
+            result.Y = vector1.Y + vector2.Y;
+            return result;
+        }
+        public class Segment
+        {
+            public Vector Begin;
+            public Vector End;
+
+            public double GetLenght()
+            {
+                return Geometry.GetLength(this);
+            }
+            public bool Contains(Vector v)
+            {
+                return Geometry.IsVectorInSegment(v, this);
+            }
+        }
+    }
+}
