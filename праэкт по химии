@@ -1,0 +1,70 @@
+using pragramiravanie;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.ConstrainedExecution;
+
+namespace pragramiravanie
+{
+    using System;
+    using System.Threading.Tasks;
+
+    class Program
+    {
+        public static async Task Main()
+        {
+            //Авторы исследования: Кривов Дмитрий, Борисов Никита, Сергушин Михаил
+            //Руководитель исследования: Хритохин Николай Александрович
+
+            string path = "C:\\Users\\krivo\\OneDrive\\Documents\\Учёба\\praekt.txt";
+            string text = "write";
+
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync(text);
+            }
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string filecontent = await reader.ReadToEndAsync();
+                Console.WriteLine(filecontent);
+            }
+
+            Console.WriteLine("Создание полумолярных растворов нитрата кальция"); Console.WriteLine();
+            Console.WriteLine("№ \t V( Ca(NO3)2 ) \t      V( H2O ) \t   C0");
+            double[] V_Ca = new double[] { 1, 2, 4, 6, 10, 20, 40, 60, 100}; // объём нитрата кальция мл
+            double[] V_H2O = new double[9]; // объём воды мл
+            for (int i =0; i<9; i++)
+                V_H2O[i] = 100 - V_Ca[i];
+            double[] C0 = new double[9]; //исходная концентрация растворов
+            for (int i =0; i<9;i++)
+                C0[i] = V_Ca[i]/200;
+            for(int i =0; i < 9; i++)
+                Console.WriteLine("{0} \t \t {1} \t \t {2} \t  {3}", i, V_Ca[i], V_H2O[i], C0[i]);
+
+            const double C_TB = 0.04892; // концентрация Трилона Б
+            const double m = 1; // масса адсорбента (сульфокатионит KO-2-8) г
+            const double V = 100; // объём каждого раствора мл
+
+            Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Результаты титрования"); Console.WriteLine();
+            Console.WriteLine("№ \t      V(Трилон Б) \t   V(Cs) \t\t    Г");
+            double[] V_aliquot = new double[] {50, 50, 10, 10, 10, 10, 3, 2, 1}; // объём аликвоты для титрования мл
+            double[] V_TB = new double[9] {0.5, 3.4, 1.7, 4.1, 10.3, 6.5, 10.9, 11.6, 11.3};
+            // объём трилона б затраченного на титрование мл
+            double[] Cs = new double[9]; // равновесная концентрация растворов
+            for (int i=0; i<9; i++)
+                Cs[i] = C_TB / V_aliquot[i] * V_TB[i];
+            double[] gamma = new double[9]; // величина адсорбции
+            for (int i = 0; i < 9; i++)
+                gamma[i] = (C0[i] - Cs[i]) * V / m;
+            string Negative_gamma = "Г<0";
+            for (int i = 0; i < 9; i++)
+            {
+                if (gamma[i] > 0)
+                    Console.WriteLine("{0} \t \t {1} \t \t {2} \t\t {3}", i, V_TB[i], Math.Round(Cs[i], 8), Math.Round(gamma[i], 6));
+                else
+                    Console.WriteLine("{0} \t \t {1} \t \t {2} \t \t {3}", i, V_TB[i], Math.Round(Cs[i], 8), Negative_gamma);
+            }
+        }
+    }
+}
